@@ -16,7 +16,9 @@
 #' @export
 slackr_upload <- function(filename, title=basename(filename),
                           initial_comment=basename(filename),
-                          channels="", api_token=Sys.getenv("SLACK_API_TOKEN")) {
+                          channels="",
+                          api_token=Sys.getenv("SLACK_API_TOKEN"),
+                          username=Sys.getenv("SLACK_USERNAME")) {
 
   f_path <- path.expand(filename)
 
@@ -34,7 +36,8 @@ slackr_upload <- function(filename, title=basename(filename),
                       httr::add_headers(`Content-Type`="multipart/form-data"),
                       body=list( file=httr::upload_file(f_path), filename=f_name,
                                  title=title, initial_comment=initial_comment,
-                                 token=api_token, channels=paste(modchan, collapse=",")))
+                                 token=api_token, channels=paste(modchan, collapse=","),
+                                 username=username))
 
     return(invisible(res))
 
